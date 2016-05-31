@@ -25,6 +25,12 @@ class ViewController: UIViewController {
     var tlv: Bool?
     var trv: Bool?
     var tmv: Bool?
+    var mlv: Bool?
+    var mmv: Bool?
+    var mrv: Bool?
+    var blv: Bool?
+    var bmv: Bool?
+    var brv: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,21 +58,120 @@ class ViewController: UIViewController {
         bl.addGestureRecognizer(tapGestureRecognizer9)
     }
     
-    func saveMove(imageView:UIImageView) {
+    func saveMove(imageView:UIImageView) -> Bool{ //-> means return
+        
+        var savedMove = false
         
         switch imageView {
-        case tl: tlv = drawX
-        case tr: trv = drawX
-        case tm: tmv = drawX
+        case tl:
+            if let _ = tlv {
+                print ("already a value")
+            } else {
+                tlv = drawX
+                savedMove = true
+            }
+            
+        case tr:
+        if let _ = trv {
+            print ("already a value")
+        } else {
+            trv = drawX
+            savedMove = true
+            }
+
+        case tm:
+            if let _ = tmv {
+            print ("already a value")
+        } else {
+            tmv = drawX
+            savedMove = true
+            }
+        case ml:
+            if let _ = mlv {
+            print ("already a value")
+        } else {
+            mlv = drawX
+            savedMove = true
+            }
+        case mm:
+            if let _ = mmv {
+                print ("already a value")
+            } else {
+                mmv = drawX
+                savedMove = true
+            }
+        case mr:
+            if let _ = mrv {
+                print ("already a value")
+            } else {
+                mrv = drawX
+                savedMove = true
+            }
+        case bl:
+            if let _ = blv {
+                print ("already a value")
+            } else {
+                blv = drawX
+                savedMove = true
+            }
+        case bm:
+            if let _ = bmv {
+                print ("already a value")
+            } else {
+                bmv = drawX
+                savedMove = true
+            }
+        case br:
+            if let _ = brv {
+                print ("already a value")
+            } else {
+                brv = drawX
+                savedMove = true
+            }
+
+
+
+
+
+
+
         default: break
         }
 
 //        if imageView == tl {
 //            tlv = drawX
 //        }
+        return savedMove
+    }
+    func checkSequence (v1:Bool?, v2:Bool?, v3:Bool?) ->Bool{
+        var win = false
+        if let v1u = v1, v2u = v2, v3u = v3{
+            if v1u == v2u && v2u == v3u {
+                win = true
+            }
+        }
+        
+        return win
+    }
+    func checkForWins() {
+        var win = false
+        win = checkSequence(tlv, v2: tmv, v3: trv)
+      
+        if win {
+            
+            // create the alert
+            let alert = UIAlertController(title: "TicTacToe", message: "Win!", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            // add the actions (buttons)
+            alert.addAction(UIAlertAction(title: "Replay", style: UIAlertActionStyle.Default, handler: nil))
+            
+            // show the alert
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+
+    
         
     }
-    
 
     func imageTapped(sender: AnyObject)
     {
@@ -78,17 +183,21 @@ class ViewController: UIViewController {
             
             let gesture = sender as! UITapGestureRecognizer
             let tappedImage = gesture.view as! UIImageView
-            saveMove(tappedImage)
-            tappedImage.image = UIImage(named: "x")
-            drawX = false
+            if saveMove(tappedImage){
+                tappedImage.image = UIImage(named: "x")
+                drawX = false
+            }
         } else {
             
             let gesture = sender as! UITapGestureRecognizer
             let tappedImage = gesture.view as! UIImageView
-            saveMove(tappedImage)
-            tappedImage.image = UIImage(named: "o")
-            drawX = true
+            if saveMove(tappedImage){
+                tappedImage.image = UIImage(named: "o")
+                drawX = true
+            }
         }
+        checkForWins()
+        
         
         
         // TODO 3: Change the image according to the logic class with code
